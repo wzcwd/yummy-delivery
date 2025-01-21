@@ -24,11 +24,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mybatis.spring>2.2.0</mybatis.spring>
+        <mybatis.spring>3.0.4</mybatis.spring>
         <lombok>1.18.20</lombok>
-        <fastjson>1.2.83</fastjson>
+        <fastjson2>2.0.53</fastjson2>
         <commons.lang>2.6</commons.lang>
-        <druid>1.2.1</druid>
         <pagehelper>2.1.0</pagehelper>
         <knife4j>3.0.3</knife4j>
         <aspectj>1.9.4</aspectj>
@@ -52,21 +51,15 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson}</version>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2}</version>
             </dependency>
 
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
                 <version>${commons.lang}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid}</version>
             </dependency>
 
             <dependency>

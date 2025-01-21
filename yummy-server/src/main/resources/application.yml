@@ -33,7 +33,7 @@ logging:
 yummy:
   jwt:
     # set the secret key for jwt
-    admin-secret-key:
+    admin-secret-key: 12312424141414124124124141241241241241412421412414
     # set the valid time for jwt
     admin-ttl: 7200000
     # set the token name passing from front-end
