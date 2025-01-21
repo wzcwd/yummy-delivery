@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev # get value from application-dev.yml
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${yummy.datasource.driver-class-name}
+    url: jdbc:mysql://${yummy.datasource.host}:${yummy.datasource.port}/${yummy.datasource.database}?serverTimezone=America/Vancouver&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${yummy.datasource.username}
+    password: ${yummy.datasource.password}
+
+mybatis:
+  #mapper configuration
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.yummy.entity
+  configuration:
+    # map mysql name to java style name: dept_id -> deptID
+    map-underscore-to-camel-case: true
+
+# log configuration
+logging:
+  level:
+    com:
+      yummy:
+        mapper: debug
+        service: info
+        controller: info
+
+# jwt configuration
+yummy:
+  jwt:
+    # set the secret key for jwt
+    admin-secret-key:
+    # set the valid time for jwt
+    admin-ttl: 7200000
+    # set the token name passing from front-end
+    admin-token-name: token
+
