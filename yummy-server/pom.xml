@@ -45,6 +45,20 @@
         </dependency>
 
         <dependency>
+            <groupId>com.yummy</groupId>
+            <artifactId>yummy-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yummy</groupId>
+            <artifactId>yummy-pojo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
