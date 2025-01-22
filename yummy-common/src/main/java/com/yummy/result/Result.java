@@ -5,13 +5,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * a universal result return to front-end
+ * a universal result class that returns to front-end
  * @param <T>
  */
 @Data
 public class Result<T> implements Serializable {
 
-    private Integer code; //1:success; 0 and others: failed和其它数字为失败
+    private Integer code; // 1: success; 0 and others: failed
     private String msg; // error message
     private T data;
 

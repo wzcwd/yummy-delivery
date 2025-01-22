@@ -5,9 +5,9 @@ package com.yummy.constant;
  */
 public class StatusConstant {
 
-    //启用
+    //enable
     public static final Integer ENABLE = 1;
 
-    //禁用
+    //disable
     public static final Integer DISABLE = 0;
 }

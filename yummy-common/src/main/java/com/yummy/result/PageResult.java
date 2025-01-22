@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * encapsulate the result of result in page
+ * encapsulate the result in page
  */
 @Data
 @AllArgsConstructor

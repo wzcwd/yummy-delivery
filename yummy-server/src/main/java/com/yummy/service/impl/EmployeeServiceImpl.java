@@ -23,7 +23,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * 员工登录
      *
      * @param employeeLoginDTO
-     * @return
+     * @return employee
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();

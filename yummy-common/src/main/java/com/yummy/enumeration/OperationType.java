@@ -1,7 +1,7 @@
 package com.yummy.enumeration;
 
 /**
- * 数据库操作类型
+ * database operation type
  */
 public enum OperationType {
 

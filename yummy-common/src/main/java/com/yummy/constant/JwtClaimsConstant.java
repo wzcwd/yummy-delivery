@@ -1,5 +1,7 @@
 package com.yummy.constant;
-
+/**
+ * Jwt generation
+ */
 public class JwtClaimsConstant {
 
     public static final String EMP_ID = "empId";
