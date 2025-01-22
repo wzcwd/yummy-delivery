@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * 套餐菜品关系
+ * Relationship between dish and combo
  */
 @Data
 @Builder
@@ -21,18 +21,15 @@ public class ComboDish implements Serializable {
 
     private Long id;
 
-    //套餐id
     private Long comboId;
 
-    //菜品id
     private Long dishId;
 
-    //菜品名称 （冗余字段）
+    //dish name
     private String name;
 
-    //菜品原价
+    //dish price
     private BigDecimal price;
 
-    //份数
     private Integer copies;
 }

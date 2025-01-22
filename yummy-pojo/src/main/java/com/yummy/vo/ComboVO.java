@@ -45,5 +45,5 @@ public class ComboVO implements Serializable {
     private String categoryName;
 
     //套餐和菜品的关联关系
-    private List<ComboDish> setmealDishes = new ArrayList<>();
+    private List<ComboDish> comboDishes = new ArrayList<>();
 }

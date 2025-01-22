@@ -18,24 +18,20 @@ public class User implements Serializable {
 
     private Long id;
 
-    //微信用户唯一标识
+    // unique id of wechat users
     private String openid;
 
-    //姓名
     private String name;
 
-    //手机号
-    private String phone;
+    private String tel;
 
-    //性别 0 女 1 男
+    //0:female; 1:male
     private String gender;
 
-    //身份证号
+    //id number 身份证号
     private String idNumber;
 
-    //头像
     private String photo;
 
-    //注册时间
     private LocalDateTime createTime;
 }

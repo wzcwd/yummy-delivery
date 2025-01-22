@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 地址簿
+ * Address book
  */
 @Data
 @Builder
@@ -19,43 +19,20 @@ public class AddressBook implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-
-    //用户id
     private Long userId;
-
-    //收货人
     private String receiver;
-
-    //手机号
     private String tel;
-
-    //性别 0 女 1 男
+    // 0: female;  1: male
     private String gender;
-
-    //省级区划编号
     private String provinceCode;
-
-    //省级名称
     private String provinceName;
-
-    //市级区划编号
     private String cityCode;
-
-    //市级名称
     private String cityName;
-
-    //区级区划编号
     private String districtCode;
-
-    //区级名称
     private String districtName;
-
-    //详细地址
+    // detailed address
     private String detail;
-
-    //标签
     private String label;
-
-    //是否默认 0否 1是
+    //0: not default;  1: set default
     private Integer isDefault;
 }
