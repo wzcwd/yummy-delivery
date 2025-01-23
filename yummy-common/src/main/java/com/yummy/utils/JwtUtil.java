@@ -44,7 +44,7 @@ public class JwtUtil {
      *
      * @param secretKey The JWT secret key must be kept secure on the server and should not be exposed
      *                  If integrating with multiple clients, it is recommended to create multiple secret keys
-     * @param token    token get from  front-end
+     * @param token    token get from front-end
      * @return claims
      */
     public static Claims parseJWT(String secretKey, String token) {

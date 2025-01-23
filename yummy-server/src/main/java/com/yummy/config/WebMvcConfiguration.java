@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
- * 配置类，注册web层相关组件
+ * configuration class, register the component of web layer
  */
 @Configuration
 @Slf4j

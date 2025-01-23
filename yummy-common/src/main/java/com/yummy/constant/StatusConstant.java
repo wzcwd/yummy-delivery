@@ -1,7 +1,7 @@
 package com.yummy.constant;
 
 /**
- * status constant: enable or disable
+ * status constant: 1: enable; 0: disable
  */
 public class StatusConstant {
 

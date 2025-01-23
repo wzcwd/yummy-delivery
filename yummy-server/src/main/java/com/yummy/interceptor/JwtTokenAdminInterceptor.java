@@ -13,7 +13,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * jwt令牌校验的拦截器
+ * jwt token adminInterceptor
  */
 @Component
 @Slf4j
@@ -23,7 +23,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
     private JwtProperties jwtProperties;
 
     /**
-     * 校验jwt
+     * verify jwt
      *
      * @param request
      * @param response
@@ -38,19 +38,19 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //1、从请求头中获取令牌
+        //1、get token from request header
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        //2、校验令牌
+        //2、verify token
         try {
-            log.info("jwt校验:{}", token);
+            log.info("jwt verification:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("当前员工id：", empId);
-            //3、通过，放行
+            log.info("current employee id：", empId);
+            //3、pass
             return true;
         } catch (Exception ex) {
-            //4、不通过，响应401状态码
+            //4、fail，return 401 code
             response.setStatus(401);
             return false;
         }

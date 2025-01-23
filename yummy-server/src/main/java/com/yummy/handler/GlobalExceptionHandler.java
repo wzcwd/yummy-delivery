@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
- * 全局异常处理器，处理项目中抛出的业务异常
+ *  Global Exception Handler，handle with the exception to service
  */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
     /**
-     * 捕获业务异常
+     * catch the exception to service
      * @param ex
      * @return
      */
     @ExceptionHandler
     public Result exceptionHandler(BaseException ex){
-        log.error("异常信息：{}", ex.getMessage());
+        log.error("exception message：{}", ex.getMessage());
         return Result.error(ex.getMessage());
     }
 

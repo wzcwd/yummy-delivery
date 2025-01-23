@@ -1,7 +1,9 @@
 package com.yummy.service.impl;
 
 import com.yummy.constant.MessageConstant;
+import com.yummy.constant.PasswordConstant;
 import com.yummy.constant.StatusConstant;
+import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.entity.Employee;
 import com.yummy.exception.AccountLockedException;
@@ -9,9 +11,12 @@ import com.yummy.exception.AccountNotFoundException;
 import com.yummy.exception.PasswordErrorException;
 import com.yummy.mapper.EmployeeMapper;
 import com.yummy.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -20,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper employeeMapper;
 
     /**
-     * 员工登录
+     * Employee Login
      *
      * @param employeeLoginDTO
      * @return employee
@@ -29,30 +34,52 @@ public class EmployeeServiceImpl implements EmployeeService {
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
 
-        //1、根据用户名查询数据库中的数据
+        //1、check username in database
         Employee employee = employeeMapper.getByUsername(username);
 
-        //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
+        //2、handle exceptions（account not found, wrong password, account locked ）
         if (employee == null) {
-            //账号不存在
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
 
-        //密码比对
-        // TODO 后期需要进行md5加密，然后再进行比对
+        //compare the password after using  md5 to encrypt
         password = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!password.equals(employee.getPassword())) {
-            //密码错误
+            // wrong password
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
-
+        //check the status of the employee
         if (employee.getStatus() == StatusConstant.DISABLE) {
-            //账号被锁定
+            //account locked
             throw new AccountLockedException(MessageConstant.ACCOUNT_LOCKED);
         }
 
-        //3、返回实体对象
         return employee;
     }
 
+    /**
+     * add employee by admin
+     * @param employeeDTO
+     * @return
+     */
+    @Override
+    public void addEmployee(EmployeeDTO employeeDTO) {
+        // convert employeeDTO to Employee(entity)
+        Employee employee = new Employee();
+        // copyProperties from employeeDTO to employee
+        BeanUtils.copyProperties(employeeDTO, employee);
+        // set remaining attributes
+        employee.setStatus(StatusConstant.ENABLE);
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        // TODO set create user
+        employee.setCreateUser(10L);
+        employee.setUpdateUser(10L);
+
+        // write to database
+        employeeMapper.insertEmployee(employee);
+
+
+    }
 }

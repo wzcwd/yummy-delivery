@@ -1,6 +1,7 @@
 package com.yummy.controller.admin;
 
 import com.yummy.constant.JwtClaimsConstant;
+import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.entity.Employee;
 import com.yummy.properties.JwtProperties;
@@ -35,7 +36,7 @@ public class EmployeeController {
      * Login
      *
      * @param employeeLoginDTO
-     * @return
+     * @return Result
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -43,7 +44,7 @@ public class EmployeeController {
 
         Employee employee = employeeService.login(employeeLoginDTO);
 
-        //登录成功后，生成jwt令牌
+        // generate jwt token if login successful
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
         String token = JwtUtil.createJWT(
@@ -51,6 +52,7 @@ public class EmployeeController {
                 jwtProperties.getAdminTtl(),
                 claims);
 
+        // builder design pattern for building an object
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
                 .userName(employee.getUsername())
@@ -64,11 +66,27 @@ public class EmployeeController {
     /**
      * Logout
      *
-     * @return
+     * @return Result
      */
     @PostMapping("/logout")
     public Result<String> logout() {
         return Result.success();
     }
+
+    /**
+     * Add employee
+     * @param employeeDTO
+     *
+     * @return Result
+     */
+    @PostMapping
+    public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("add employee: {}", employeeDTO);
+        employeeService.addEmployee(employeeDTO);
+        return Result.success();
+    }
+
+
+
 
 }
