@@ -3,6 +3,7 @@ package com.yummy.service.impl;
 import com.yummy.constant.MessageConstant;
 import com.yummy.constant.PasswordConstant;
 import com.yummy.constant.StatusConstant;
+import com.yummy.context.BaseContext;
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.entity.Employee;
@@ -73,13 +74,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
-        // TODO set create user
-        employee.setCreateUser(10L);
-        employee.setUpdateUser(10L);
-
+        // get the id of current user from ThreadLocal
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
         // write to database
         employeeMapper.insertEmployee(employee);
-
-
     }
 }

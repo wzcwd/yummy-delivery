@@ -1,6 +1,7 @@
 package com.yummy.interceptor;
 
 import com.yummy.constant.JwtClaimsConstant;
+import com.yummy.context.BaseContext;
 import com.yummy.properties.JwtProperties;
 import com.yummy.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -38,19 +39,21 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        //1、get token from request header
+        // 1.get token from request header
         String token = request.getHeader(jwtProperties.getAdminTokenName());
 
-        //2、verify token
+        // 2.verify token
         try {
             log.info("jwt verification:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
             log.info("current employee id：", empId);
-            //3、pass
+            // save the id in ThreadLocal
+            BaseContext.setCurrentId(empId);
+            // 3.pass
             return true;
         } catch (Exception ex) {
-            //4、fail，return 401 code
+            // 4.fail，return 401 code
             response.setStatus(401);
             return false;
         }
