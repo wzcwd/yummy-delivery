@@ -29,4 +29,12 @@ public interface EmployeeService {
      *
      */
     PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * enable or disable user account
+     * @param status
+     * @param id
+     *
+     */
+    void changeStatus(Integer status, Long id);
 }

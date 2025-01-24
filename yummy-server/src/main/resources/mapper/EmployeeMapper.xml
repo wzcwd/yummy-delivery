@@ -9,9 +9,25 @@
         <where>
             <if test="name != null and name != ''">
                 name like concat('%', #{name}, '%')
-                 /*no need to write limit.... as PageHelper will do it for you */
+                /*no need to write limit.... as PageHelper will do it for you */
             </if>
         </where>
         order by create_time desc
     </select>
+
+    <update id="update" parameterType="employee">
+        update employee
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

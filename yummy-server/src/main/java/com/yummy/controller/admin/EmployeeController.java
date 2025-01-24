@@ -99,6 +99,19 @@ public class EmployeeController {
 
     }
 
+    /**
+     * enable or disable user account
+     * @param
+     *
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result changeStatus(@PathVariable Integer status, Long id) {
+        log.info("changeStatus: {},{}", status, id);
+        employeeService.changeStatus(status, id);
+        return Result.success();
+    }
+
 
 
 

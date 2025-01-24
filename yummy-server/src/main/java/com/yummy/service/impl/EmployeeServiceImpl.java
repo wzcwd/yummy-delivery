@@ -103,4 +103,21 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> records = page.getResult();
         return new PageResult(total,records);
     }
+
+    /**
+     * enable or disable user account
+     * @param status, id
+     *
+     */
+    @Override
+    public void changeStatus(Integer status, Long id) {
+
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        // use dynamic sql for code reuse
+        employeeMapper.update(employee);
+
+    }
 }
