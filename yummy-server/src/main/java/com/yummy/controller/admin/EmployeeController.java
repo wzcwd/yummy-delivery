@@ -112,6 +112,36 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * search employee by id
+     * @param id
+     *
+     * @return Result
+     */
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("getById: {}", id);
+        Employee employee = employeeService.getEmployee(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * update employee info
+     * @param employeeDTO
+     *
+     * @return Result
+     */
+    @PutMapping
+    public Result updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("update Employee info: {}", employeeDTO);
+        employeeService.updateInfo(employeeDTO);
+        return Result.success();
+    }
+
+
+
+
+
 
 
 

@@ -37,4 +37,20 @@ public interface EmployeeService {
      *
      */
     void changeStatus(Integer status, Long id);
+
+    /**
+     * search employee by id
+     * @param id
+     *
+     * @return Employee
+     */
+    Employee getEmployee(Long id);
+
+    /**
+     * update employee info
+     * @param employeeDTO
+     *
+     * @return
+     */
+    void updateInfo(EmployeeDTO employeeDTO);
 }

@@ -118,6 +118,33 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
         // use dynamic sql for code reuse
         employeeMapper.update(employee);
+    }
 
+    /**
+     * search employee by id
+     * @param id
+     *
+     * @return Employee
+     */
+    @Override
+    public Employee getEmployee(Long id) {
+        Employee employee = employeeMapper.listEmployee(id);
+        // for security concerns, set password ****
+        employee.setPassword("******");
+        return employee;
+    }
+
+    /**
+     * update employee info
+     * @param employeeDTO
+     *
+     * @return
+     */
+    @Override
+    public void updateInfo(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO, employee);
+        employeeMapper.update(employee);
     }
 }
+
