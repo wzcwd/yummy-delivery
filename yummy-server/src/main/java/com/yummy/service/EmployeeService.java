@@ -2,7 +2,9 @@ package com.yummy.service;
 
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
+import com.yummy.dto.EmployeePageQueryDTO;
 import com.yummy.entity.Employee;
+import com.yummy.result.PageResult;
 
 public interface EmployeeService {
 
@@ -19,4 +21,12 @@ public interface EmployeeService {
      *
      */
     void addEmployee(EmployeeDTO employeeDTO);
+
+
+    /**
+     * pageQuery
+     * @param employeePageQueryDTO
+     *
+     */
+    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }

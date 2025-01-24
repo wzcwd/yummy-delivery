@@ -1,5 +1,7 @@
 package com.yummy.mapper;
 
+import com.github.pagehelper.Page;
+import com.yummy.dto.EmployeePageQueryDTO;
 import com.yummy.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -26,6 +28,10 @@ public interface EmployeeMapper {
             "values(#{name},#{username},#{password}, #{tel}, #{gender}, #{idNumber}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insertEmployee(Employee employee);
 
-
-
+    /**
+     * page query
+     * @param employeePageQueryDTO
+     *
+     */
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 }
