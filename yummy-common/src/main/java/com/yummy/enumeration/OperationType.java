@@ -5,14 +5,7 @@ package com.yummy.enumeration;
  */
 public enum OperationType {
 
-    /**
-     * update
-     */
     UPDATE,
 
-    /**
-     * insert
-     */
     INSERT
-
 }
