@@ -1,9 +1,11 @@
 package com.yummy.controller.admin;
 
 import com.yummy.constant.JwtClaimsConstant;
+import com.yummy.context.BaseContext;
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.dto.EmployeePageQueryDTO;
+import com.yummy.dto.PasswordEditDTO;
 import com.yummy.entity.Employee;
 import com.yummy.properties.JwtProperties;
 import com.yummy.result.PageResult;
@@ -13,6 +15,7 @@ import com.yummy.utils.JwtUtil;
 import com.yummy.vo.EmployeeLoginVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -137,6 +140,19 @@ public class EmployeeController {
         employeeService.updateInfo(employeeDTO);
         return Result.success();
     }
+
+    /**
+     * update password
+     * @param passwordEditDTO
+     */
+    @PutMapping("/editPassword")
+    public Result editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+        log.info("update password: {}", passwordEditDTO);
+        employeeService.updatePassword(passwordEditDTO);
+        return Result.success();
+    }
+
+
 
 
 

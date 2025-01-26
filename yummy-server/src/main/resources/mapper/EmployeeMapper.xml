@@ -23,6 +23,7 @@
             <if test="tel != null">tel = #{tel},</if>
             <if test="gender != null">gender = #{gender},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="password != null">password = #{password},</if>
             <if test="createUser != null">create_user = #{createUser},</if>
             <if test="updateUser != null">update_user = #{updateUser},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

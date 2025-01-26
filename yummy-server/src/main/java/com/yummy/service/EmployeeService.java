@@ -3,6 +3,7 @@ package com.yummy.service;
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.dto.EmployeePageQueryDTO;
+import com.yummy.dto.PasswordEditDTO;
 import com.yummy.entity.Employee;
 import com.yummy.result.PageResult;
 
@@ -53,4 +54,10 @@ public interface EmployeeService {
      * @return
      */
     void updateInfo(EmployeeDTO employeeDTO);
+
+    /**
+     * update password
+     * @param passwordEditDTO
+     */
+    void updatePassword(PasswordEditDTO passwordEditDTO);
 }

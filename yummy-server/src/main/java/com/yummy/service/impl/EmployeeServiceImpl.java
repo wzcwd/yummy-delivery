@@ -9,6 +9,7 @@ import com.yummy.context.BaseContext;
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.dto.EmployeePageQueryDTO;
+import com.yummy.dto.PasswordEditDTO;
 import com.yummy.entity.Employee;
 import com.yummy.exception.AccountLockedException;
 import com.yummy.exception.AccountNotFoundException;
@@ -77,11 +78,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         // set remaining attributes
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
+
+        // we used customized @AutoFill annotation for those functions
+       /* employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         // get the id of current user from ThreadLocal
         employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());*/
+
         // write to database
         employeeMapper.insertEmployee(employee);
     }
@@ -145,6 +149,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
         employeeMapper.update(employee);
+    }
+
+    /**
+     * update password
+     * @param passwordEditDTO
+     */
+    @Override
+    public void updatePassword(PasswordEditDTO passwordEditDTO) {
+        String oldPassword = passwordEditDTO.getOldPassword();
+        // encrypt old password
+        oldPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
+        // get info of login account
+        Long id = BaseContext.getCurrentId();
+        Employee employee = employeeMapper.listEmployee(id);
+        if (!oldPassword.equals(employee.getPassword())){
+            throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
+        }
+        String newPassword = passwordEditDTO.getNewPassword();
+        String password = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        employee.setPassword(password);
+        employeeMapper.update(employee);
+
     }
 }
 
