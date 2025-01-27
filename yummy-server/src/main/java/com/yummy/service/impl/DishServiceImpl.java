@@ -1,17 +1,21 @@
 package com.yummy.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.yummy.dto.DishDTO;
+import com.yummy.dto.DishPageQueryDTO;
 import com.yummy.entity.Dish;
 import com.yummy.entity.DishFlavor;
 import com.yummy.mapper.DishFlavorMapper;
 import com.yummy.mapper.DishMapper;
+import com.yummy.result.PageResult;
 import com.yummy.service.DishService;
+import com.yummy.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.FlashMapManager;
 
 import java.util.List;
 
@@ -42,5 +46,12 @@ public class DishServiceImpl implements DishService {
             flavors.forEach(flavor -> {flavor.setDishId(dishId);});
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
+
+    @Override
+    public PageResult dishPageQuery(DishPageQueryDTO dishPageQueryDTO) {
+        PageHelper.startPage(dishPageQueryDTO.getPage(),dishPageQueryDTO.getPageSize());
+        Page<DishVO> page = dishMapper.pageQuery(dishPageQueryDTO);
+        return new PageResult(page.getTotal(),page.getResult());
     }
 }
