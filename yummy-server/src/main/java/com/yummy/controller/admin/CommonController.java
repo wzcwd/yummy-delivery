@@ -1,5 +1,6 @@
 package com.yummy.controller.admin;
 
+import com.yummy.constant.MessageConstant;
 import com.yummy.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,17 +18,21 @@ import java.util.UUID;
 public class CommonController {
 
     @PostMapping("/upload")
-    public Result<String> uploadFile(MultipartFile file) throws IOException {
-        log.info("upload a file:{}", file);
-        // get original file name
-        String fileName = file.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf("."));
-        // generate new file name using uuid
-        String newFileName = UUID.randomUUID().toString() + suffix;
-        // save the file to local directory
-        file.transferTo( new File("/Users/wzc/Downloads/"+ newFileName));
-
-        return Result.success("/Users/wzc/Downloads/"+ newFileName);
+    public Result<String> uploadFile(MultipartFile file){
+        try{
+            log.info("upload a file:{}", file);
+            // get original file name
+            String fileName = file.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            // generate new file name using uuid
+            String newFileName = UUID.randomUUID().toString() + suffix;
+            // save the file to local directory
+            file.transferTo( new File("/Users/wzc/Downloads/"+ newFileName));
+            return Result.success("/Users/wzc/Downloads/"+ newFileName);
+        }catch (IOException e){
+            log.error("upload file failed");
+        }
+        return Result.error(MessageConstant.UPLOAD_FAILED);
 
     }
 }
