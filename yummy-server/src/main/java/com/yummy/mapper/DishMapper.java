@@ -8,6 +8,9 @@ import com.yummy.enumeration.OperationType;
 import com.yummy.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
 
 @Mapper
 public interface DishMapper {
@@ -31,4 +34,12 @@ public interface DishMapper {
      * @param dishPageQueryDTO
      */
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    @Select("select * from dish where  id =#{id}")
+    Dish getById(Long id);
+
+    void deleteById(List<Long> ids);
+
+    @Update("update dish set status = #{status} where id=#{id}")
+    void updateStatus(Integer status, Long id);
 }

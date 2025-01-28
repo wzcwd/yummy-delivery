@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Dish Management
  */
@@ -19,6 +21,10 @@ public class DishController {
     @Autowired
     private DishService dishService;
 
+    /**
+     *add new dish
+     * @param dishDTO)
+     */
     @PostMapping
     public Result addDish(@RequestBody DishDTO dishDTO) {
         log.info("addDish:{}", dishDTO);
@@ -26,14 +32,45 @@ public class DishController {
         return Result.success();
     }
 
+    /**
+     *Page query
+     * @param dishPageQueryDTO
+     */
     @GetMapping("/page")
-    public Result getDishPage(DishPageQueryDTO dishPageQueryDTO) {
+    public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO) {
         log.info("getDishPage:{}", dishPageQueryDTO);
         PageResult pageResult = dishService.dishPageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
 
+    /**
+     * batch delete dishes
+     * @param ids
+     */
+    @DeleteMapping
+    public Result deleteDish(@RequestParam List<Long> ids) {
+        log.info("deleteDish:{}", ids);
+        dishService.batchDelete(ids);
+        return Result.success();
+    }
+
+    /**
+     * enable or disable dish by id
+     * @param status
+     * @return Result
+     */
+    @PostMapping("/status/{status}")
+    public Result updateStatus(@PathVariable Integer status, Long id) {
+        log.info("switch dish status，{}", id);
+        dishService.enableOrDisable(status,id);
+        return Result.success();
+    }
+
+
+
+
 }
+
 
 
 

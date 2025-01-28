@@ -47,7 +47,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt verification:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-            log.info("current employee id：", empId);
+            log.info("current employee id：{}", empId);
             // save the id in ThreadLocal
             BaseContext.setCurrentId(empId);
             // 3.pass
