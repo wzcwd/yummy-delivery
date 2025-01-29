@@ -18,6 +18,13 @@
         </foreach>
     </insert>
 
+    <delete id="deleteByComboIds">
+        delete from combo_dish where combo_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
 
 </mapper>
 

@@ -1,10 +1,11 @@
 package com.yummy.service.impl;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.yummy.constant.MessageConstant;
+import com.yummy.constant.StatusConstant;
 import com.yummy.dto.ComboDTO;
 import com.yummy.entity.Combo;
 import com.yummy.entity.ComboDish;
+import com.yummy.exception.DeletionNotAllowedException;
 import com.yummy.mapper.ComboDishMapper;
 import com.yummy.mapper.ComboMapper;
 import com.yummy.service.ComboService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ComboServiceImpl implements ComboService {
@@ -36,134 +38,40 @@ public class ComboServiceImpl implements ComboService {
         Long comboId = combo.getId();
         List<ComboDish> comboDishes = comboDTO.getComboDishes();
         if (comboDishes != null && !comboDishes.isEmpty()) {
-            comboDishes.forEach(comboDish -> { comboDish.setComboId(comboId); });
+            comboDishes.forEach(comboDish -> {
+                comboDish.setComboId(comboId);
+            });
             comboDishMapper.insertBatch(comboDishes);
         }
     }
-/*
 
-    */
-/**
-     * 套餐条件分页查询
-     * @param setmealPageDTO
-     * @return
-     *//*
-
-    public PageResult comboPageQuary(SetmealPageDTO setmealPageDTO) {
-        PageHelper.startPage(setmealPageDTO.getPage(), setmealPageDTO.getPageSize());
-        Page<Setmeal> setmealList = setmealMapper.getPageList(setmealPageDTO);
-        return new PageResult(setmealList.getTotal(), setmealList.getResult());
-    }
-
-    */
-/**
-     * 根据套餐id查询套餐，包括菜品信息
+    /**
+     * update combo status
+     * @param status
      * @param id
-     * @return
-     *//*
-
-    public SetmealVO getComboById(Integer id) {
-        Setmeal setmeal = setmealMapper.getSetmealById(id);
-        List<SetmealDish> setmealDishes = setmealDishMapper.getDishesBySetmealId(id);
-        // 组成SetmealVO后返回
-        SetmealVO setmealVO = new SetmealVO();
-        BeanUtils.copyProperties(setmeal, setmealVO);
-        setmealVO.setSetmealDishes(setmealDishes);
-        return setmealVO;
+     * @return Result
+     */
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        comboMapper.updateStatus(status, id);
     }
 
-    */
-/**
-     * 起售停售套餐
-     * @param id
-     *//*
-
-    public void switchStatus(Integer id) {
-        setmealMapper.onOff(id);
-    }
-
-    */
-/**
-     * 修改套餐
-     * @param setmealDTO
-     *//*
-
-    public void update(SetmealDTO setmealDTO) {
-        Setmeal setmeal = new Setmeal();
-        BeanUtils.copyProperties(setmealDTO, setmeal);
-        // 先修改套餐setmeal
-        setmealMapper.update(setmeal);
-        // 再修改套餐下的菜品setmealDish
-        // 由于行数据可能不同，因此需要先根据setmealId批量删除，再批量插入
-        Integer setmealId = setmealDTO.getId();
-        setmealDishMapper.deleteBySetmealId(setmealId);
-        List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
-        setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(setmealId));
-        setmealDishMapper.insertBatch(setmealDishes);
-    }
-
-    */
-/**
-     * 批量删除套餐
+    /**
+     * batch delete combos
      * @param ids
-     *//*
-
-    public void deleteBatch(List<Integer> ids) {
-        // 遍历要删除的所有套餐，如果但凡有一个在起售就抛异常
-        for(Integer id : ids){
-            Setmeal setmeal = setmealMapper.getSetmealById(id);
-            if (setmeal.getStatus() == StatusConstant.ENABLE){
-                throw new DeleteNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+     *
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void batchDelete(List<Long> ids) {
+        // we can not delete valid combo(status == 1)
+        for (Long id : ids) {
+            if (Objects.equals(comboMapper.getStatus(id), StatusConstant.ENABLE)) {
+                throw new DeletionNotAllowedException(MessageConstant.COMBO_ON_SALE);
             }
         }
-        setmealMapper.deleteBatch(ids);
-        setmealDishMapper.deleteBatch(ids);
+        comboMapper.deleteByIds(ids);
+        // we should also delete the related combo_dish
+        comboDishMapper.deleteByComboIds(ids);
     }
-
-    */
-/**
-     * 根据分类id查询所有套餐
-     * @return
-     *//*
-
-    public List<Setmeal> getList(Integer categoryId) {
-        // 还有一个条件：起售的套餐才能展示在客户端
-        Setmeal setmeal = new Setmeal();
-        setmeal.setCategoryId(categoryId);
-        setmeal.setStatus(StatusConstant.ENABLE);
-        List<Setmeal> setmealList = setmealMapper.getList(setmeal);
-        return setmealList;
-    }
-
-    */
-/**
-     * 根据套餐id查询所有菜品
-     * @param id
-     * @return
-     *//*
-
-    public List<DishItemVO> getComboDishesById(Integer id) {
-        List<DishItemVO> dishItemVOList = setmealMapper.getSetmealDishesById(id);
-        return dishItemVOList;
-    }
-
-    */
-/**
-     * 根据套餐id获取套餐详情，其中菜品都要有pic图片信息
-     * @param id
-     * @return
-     *//*
-
-    public SetmealWithPicVO getSetmealWithPic(Integer id) {
-        Setmeal setmeal = setmealMapper.getSetmealById(id);
-        // 该套餐下的每个菜品都需要加上pic字段
-        List<SetmealDishWithPic> dishWithPics = setmealDishMapper.getDishesWithPic(id);
-        // 组成setmealWithPicVO后返回
-        SetmealWithPicVO setmealWithPicVO = new SetmealWithPicVO();
-        BeanUtils.copyProperties(setmeal, setmealWithPicVO);
-        setmealWithPicVO.setSetmealDishes(dishWithPics);
-        return setmealWithPicVO;
-    }
-*/
-
 }

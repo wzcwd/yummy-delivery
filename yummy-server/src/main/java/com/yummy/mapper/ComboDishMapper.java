@@ -13,4 +13,6 @@ public interface ComboDishMapper {
     List<Long> getIdByDishId(List<Long> dishIds);
 
     void insertBatch(List<ComboDish> comboDishes);
+
+    void deleteByComboIds(List<Long> ids);
 }

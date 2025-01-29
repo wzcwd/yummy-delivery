@@ -9,5 +9,12 @@
         values (#{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime},
                 #{createUser}, #{updateUser});
     </insert>
+
+    <delete id="deleteByIds">
+        delete from combo where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+        #{id}
+        </foreach>
+    </delete>
 </mapper>
 
