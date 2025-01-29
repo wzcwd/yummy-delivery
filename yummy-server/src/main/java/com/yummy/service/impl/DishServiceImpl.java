@@ -9,6 +9,7 @@ import com.yummy.dto.DishPageQueryDTO;
 import com.yummy.entity.Dish;
 import com.yummy.entity.DishFlavor;
 import com.yummy.exception.DeletionNotAllowedException;
+import com.yummy.mapper.CategoryMapper;
 import com.yummy.mapper.ComboDishMapper;
 import com.yummy.mapper.DishFlavorMapper;
 import com.yummy.mapper.DishMapper;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +34,8 @@ public class DishServiceImpl implements DishService {
     private DishFlavorMapper dishFlavorMapper;
     @Autowired
     private ComboDishMapper comboDishMapper;
+    @Autowired
+    private CategoryMapper categoryMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -49,13 +53,15 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors = dishDTO.getFlavors();
         // note that flavor can be null
         if (flavors != null && !flavors.isEmpty()) {
-            flavors.forEach(flavor -> {
-                flavor.setDishId(dishId);
-            });
+            flavors.forEach(flavor -> {flavor.setDishId(dishId);});
             dishFlavorMapper.insertBatch(flavors);
         }
     }
 
+    /**
+     * dish page query
+     * @param dishPageQueryDTO
+     */
     @Override
     public PageResult dishPageQuery(DishPageQueryDTO dishPageQueryDTO) {
         PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
@@ -86,7 +92,7 @@ public class DishServiceImpl implements DishService {
         // delete the dish
         dishMapper.deleteById(ids);
         // delete the dish_flavour associated with the dish
-        dishFlavorMapper.deleteByDishId(ids);
+        dishFlavorMapper.deleteByDishIds(ids);
 
 
     }
@@ -94,5 +100,39 @@ public class DishServiceImpl implements DishService {
     @Override
     public void enableOrDisable(Integer status, Long id) {
         dishMapper.updateStatus(status,id);
+    }
+
+    @Override
+    public DishVO listDishById(Long id) {
+        Dish dish = dishMapper.getById(id);
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavorMapper.getByDishId(id));
+        dishVO.setCategoryName(categoryMapper.getNameByCategoryID(dish.getCategoryId()));
+        return dishVO;
+    }
+
+    @Override
+    public List<Dish> getByCategoryId(Long categoryId) {
+        List<Dish> dishes = dishMapper.getByCategoryId(categoryId);
+        return dishes;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishDTO, dish);
+        // update dish table
+        dishMapper.updateDish(dish);
+        // update dish_value table
+        // Delete the original data
+        dishFlavorMapper.deleteByDishId(dishDTO.getId());
+        // insert the updated data
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        if (flavors != null && !flavors.isEmpty()) {
+            flavors.forEach(flavor -> {flavor.setDishId(dish.getId());});
+        }
+        dishFlavorMapper.insertBatch(flavors);
     }
 }

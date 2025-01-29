@@ -8,6 +8,8 @@ import com.yummy.entity.Category;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
 import java.util.List;
 
 @Mapper
@@ -45,9 +47,12 @@ public interface CategoryMapper {
     void update(Category category);
 
     /**
-     * search category by id
-     * @param type
+     * search category by type
+     * @param type: category type
      * @return
      */
     List<Category> list(Integer type);
+
+    @Select("select name from category where id=#{categoryId}")
+    String getNameByCategoryID(Long categoryId);
 }

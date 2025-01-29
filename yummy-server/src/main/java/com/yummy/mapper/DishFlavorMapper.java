@@ -1,7 +1,9 @@
 package com.yummy.mapper;
 
 import com.yummy.entity.DishFlavor;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -17,5 +19,15 @@ public interface DishFlavorMapper {
      * delete by dish ids
      * @param dishIds
      */
-    void deleteByDishId(List<Long> dishIds);
+    void deleteByDishIds(List<Long> dishIds);
+
+    @Delete("delete from dish_flavor where dish_id =#{dishId}")
+    void deleteByDishId(Long dishId);
+    /**
+     * list flavor by dish id
+     * @param dishId
+     */
+    @Select("select * from dish_flavor where dish_id=#{dishId}")
+    List<DishFlavor> getByDishId(Long dishId);
+
 }

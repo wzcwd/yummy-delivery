@@ -2,8 +2,9 @@ package com.yummy.service;
 
 import com.yummy.dto.DishDTO;
 import com.yummy.dto.DishPageQueryDTO;
+import com.yummy.entity.Dish;
 import com.yummy.result.PageResult;
-import org.apache.ibatis.annotations.Update;
+import com.yummy.vo.DishVO;
 
 import java.util.List;
 
@@ -32,4 +33,18 @@ public interface DishService {
      * @param id
      */
     void enableOrDisable(Integer status, Long id);
+
+    /**
+     * List dish by id
+     * @param id
+     */
+    DishVO listDishById(Long id);
+
+    List<Dish> getByCategoryId(Long categoryId);
+
+    /**
+     * update dish with flavor
+     * @param dishDTO
+     */
+    void updateWithFlavor(DishDTO dishDTO);
 }

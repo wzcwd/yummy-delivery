@@ -2,6 +2,7 @@ package com.yummy.mapper;
 
 import com.github.pagehelper.Page;
 import com.yummy.annotation.AutoFill;
+import com.yummy.dto.DishDTO;
 import com.yummy.dto.DishPageQueryDTO;
 import com.yummy.entity.Dish;
 import com.yummy.enumeration.OperationType;
@@ -42,4 +43,14 @@ public interface DishMapper {
 
     @Update("update dish set status = #{status} where id=#{id}")
     void updateStatus(Integer status, Long id);
+
+    @Select("select * from dish where category_id=#{categoryId}")
+    List<Dish> getByCategoryId(Long categoryId);
+
+    /**
+     * update dish
+     * @param dish
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    void updateDish(Dish dish);
 }

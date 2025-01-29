@@ -28,7 +28,7 @@ public class User implements Serializable {
     //0:female; 1:male
     private String gender;
 
-    //id number 身份证号
+    //id number
     private String idNumber;
 
     private String photo;
