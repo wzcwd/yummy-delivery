@@ -28,7 +28,7 @@ public class CategoryController {
      * @return
      */
     @PostMapping
-    public Result<String> save(@RequestBody CategoryDTO categoryDTO){
+    public Result<Void> save(@RequestBody CategoryDTO categoryDTO){
         log.info("add new category：{}", categoryDTO);
         categoryService.save(categoryDTO);
         return Result.success();
@@ -52,7 +52,7 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping
-    public Result<String> deleteById(Long id){
+    public Result<Void> deleteById(Long id){
         log.info("delete category：{}", id);
         categoryService.deleteById(id);
         return Result.success();
@@ -64,7 +64,7 @@ public class CategoryController {
      * @return
      */
     @PutMapping
-    public Result<String> update(@RequestBody CategoryDTO categoryDTO){
+    public Result<Void> update(@RequestBody CategoryDTO categoryDTO){
         categoryService.update(categoryDTO);
         return Result.success();
     }
@@ -73,10 +73,10 @@ public class CategoryController {
      * enable or disable category
      * @param status
      * @param id
-     * @return
+     * @return Result
      */
     @PostMapping("/status/{status}")
-    public Result<String> startOrStop(@PathVariable("status") Integer status, Long id){
+    public Result<Void> startOrStop(@PathVariable("status") Integer status, Long id){
         categoryService.startOrStop(status,id);
         return Result.success();
     }

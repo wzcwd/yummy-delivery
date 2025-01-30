@@ -1,7 +1,6 @@
 package com.yummy.controller.admin;
 
 import com.yummy.constant.JwtClaimsConstant;
-import com.yummy.context.BaseContext;
 import com.yummy.dto.EmployeeDTO;
 import com.yummy.dto.EmployeeLoginDTO;
 import com.yummy.dto.EmployeePageQueryDTO;
@@ -15,7 +14,6 @@ import com.yummy.utils.JwtUtil;
 import com.yummy.vo.EmployeeLoginVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -71,7 +69,7 @@ public class EmployeeController {
      * @return Result
      */
     @PostMapping("/logout")
-    public Result<String> logout() {
+    public Result<Void> logout() {
         return Result.success();
     }
 
@@ -82,7 +80,7 @@ public class EmployeeController {
      * @return Result
      */
     @PostMapping
-    public Result addEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<Void> addEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("add employee: {}", employeeDTO);
         employeeService.addEmployee(employeeDTO);
         return Result.success();
@@ -104,12 +102,12 @@ public class EmployeeController {
 
     /**
      * enable or disable user account
-     * @param
-     *
+     * @param status
+     * @param id
      * @return Result
      */
     @PostMapping("/status/{status}")
-    public Result changeStatus(@PathVariable Integer status, Long id) {
+    public Result<Void> changeStatus(@PathVariable Integer status, Long id) {
         log.info("changeStatus: {},{}", status, id);
         employeeService.changeStatus(status, id);
         return Result.success();
@@ -135,7 +133,7 @@ public class EmployeeController {
      * @return Result
      */
     @PutMapping
-    public Result updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<Void> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("update Employee info: {}", employeeDTO);
         employeeService.updateInfo(employeeDTO);
         return Result.success();
@@ -146,7 +144,7 @@ public class EmployeeController {
      * @param passwordEditDTO
      */
     @PutMapping("/editPassword")
-    public Result editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
+    public Result<Void> editPassword(@RequestBody PasswordEditDTO passwordEditDTO) {
         log.info("update password: {}", passwordEditDTO);
         employeeService.updatePassword(passwordEditDTO);
         return Result.success();
