@@ -13,6 +13,7 @@ import com.yummy.mapper.ComboDishMapper;
 import com.yummy.mapper.ComboMapper;
 import com.yummy.result.PageResult;
 import com.yummy.service.ComboService;
+import com.yummy.vo.ComboVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,7 @@ public class ComboServiceImpl implements ComboService {
 
     /**
      * add new combo
-     *
-     * @param comboDTO
+     * @param comboDTO:
      */
     @Transactional(rollbackFor = Exception.class)
     public void addCombo(ComboDTO comboDTO) {
@@ -51,8 +51,8 @@ public class ComboServiceImpl implements ComboService {
     /**
      * update combo status
      *
-     * @param status
-     * @param id
+     * @param status: 1:enable; 0:disable
+     * @param id:combo id
      */
     @Override
     public void updateStatus(Integer status, Long id) {
@@ -62,7 +62,7 @@ public class ComboServiceImpl implements ComboService {
     /**
      * batch delete combos
      *
-     * @param ids
+     * @param ids: combo ids
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -80,8 +80,7 @@ public class ComboServiceImpl implements ComboService {
 
     /**
      * combo page query
-     *
-     * @param comboPageQueryDTO
+     * @param comboPageQueryDTO:
      * @return PageResult
      */
     @Override
@@ -96,8 +95,7 @@ public class ComboServiceImpl implements ComboService {
 
     /**
      * update combo
-     *
-     * @param comboDTO
+     * @param comboDTO:
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -114,5 +112,18 @@ public class ComboServiceImpl implements ComboService {
                     comboDish.setComboId(combo.getId()));
         }
         comboDishMapper.insertBatch(comboDTO.getComboDishes());
+    }
+
+    /**
+     * get combo
+     * @param id: combo id
+     * @return ComboVo
+     */
+    @Override
+    public ComboVO getCombo(Long id) {
+        ComboVO comboVO = new ComboVO();
+        BeanUtils.copyProperties((comboMapper.getById(id)),comboVO);
+        comboVO.setComboDishes(comboDishMapper.getByComboId(id));
+        return comboVO;
     }
 }

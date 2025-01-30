@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ComboVO implements Serializable {
 
+    // combo id
     private Long id;
 
     private Long categoryId;

@@ -28,7 +28,7 @@ public class DishController {
      * @param dishDTO)
      */
     @PostMapping
-    public Result addDish(@RequestBody DishDTO dishDTO) {
+    public Result<Void> addDish(@RequestBody DishDTO dishDTO) {
         log.info("addDish:{}", dishDTO);
         dishService.addWithFlavor(dishDTO);
         return Result.success();
@@ -36,7 +36,8 @@ public class DishController {
 
     /**
      *Page query
-     * @param dishPageQueryDTO
+     * @param dishPageQueryDTO:
+     * @return Result
      */
     @GetMapping("/page")
     public Result<PageResult> getDishPage(DishPageQueryDTO dishPageQueryDTO) {
@@ -47,10 +48,11 @@ public class DishController {
 
     /**
      * batch delete dishes
-     * @param ids
+     * @param ids: dish ids
+     * @return Result
      */
     @DeleteMapping
-    public Result deleteDish(@RequestParam List<Long> ids) {
+    public Result<Void> deleteDish(@RequestParam List<Long> ids) {
         log.info("deleteDish:{}", ids);
         dishService.batchDelete(ids);
         return Result.success();
@@ -58,11 +60,11 @@ public class DishController {
 
     /**
      * enable or disable dish by id
-     * @param status
+     * @param status: 1 enable; 0:disable
      * @return Result
      */
     @PostMapping("/status/{status}")
-    public Result updateStatus(@PathVariable Integer status, Long id) {
+    public Result<Void> updateStatus(@PathVariable Integer status, Long id) {
         log.info("switch dish status，{}", id);
         dishService.enableOrDisable(status,id);
         return Result.success();
@@ -70,7 +72,7 @@ public class DishController {
 
     /**
      * get dish by id with flavor
-     * @param id
+     * @param id: dish id
      * @return Result
      */
     @GetMapping("/{id}")
@@ -81,7 +83,7 @@ public class DishController {
     }
     /**
      * get dishes by category id
-     * @param categoryId
+     * @param categoryId:
      * @return Result
      */
     @GetMapping("/list")
@@ -93,20 +95,15 @@ public class DishController {
 
     /**
      * update dish
-     * @param dishDTO
+     * @param dishDTO:
      * @return Result
      */
     @PutMapping
-    public Result updateDish(@RequestBody DishDTO dishDTO) {
+    public Result<Void> updateDish(@RequestBody DishDTO dishDTO) {
         log.info("updateDish:{}", dishDTO);
         dishService.updateWithFlavor(dishDTO);
         return Result.success();
     }
-
-
-
-
-
 
 
 

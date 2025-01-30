@@ -14,19 +14,9 @@ import java.util.List;
 @Mapper
 public interface ComboMapper {
 
-    /**
-     * count the combo number by category id
-     * @param id
-     *
-     */
     @Select("select count(id) from combo where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
 
-    /**
-     * add new combo
-     * @param combo
-     *
-     */
     @AutoFill(value = OperationType.INSERT)
     void insertCombo(Combo combo);
 
@@ -42,4 +32,7 @@ public interface ComboMapper {
 
     @AutoFill(value = OperationType.UPDATE)
     void update(Combo combo);
+
+    @Select("select * from combo where id=#{id}")
+    Combo getById(Long id);
 }

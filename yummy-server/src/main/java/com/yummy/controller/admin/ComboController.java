@@ -5,6 +5,7 @@ import com.yummy.dto.ComboPageQueryDTO;
 import com.yummy.result.PageResult;
 import com.yummy.result.Result;
 import com.yummy.service.ComboService;
+import com.yummy.vo.ComboVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,11 @@ public class ComboController {
     /**
      * add new combo
      *
-     * @param comboDTO
+     * @param comboDTO:
      * @return Result
      */
     @PostMapping
-    public Result addCombo(@RequestBody ComboDTO comboDTO) {
+    public Result<Void> addCombo(@RequestBody ComboDTO comboDTO) {
         log.info("add new combo：{}", comboDTO);
         comboService.addCombo(comboDTO);
         return Result.success();
@@ -34,12 +35,12 @@ public class ComboController {
 
     /**
      * enable or disable combo
-     * @param status
-     * @param id
+     * @param status:
+     * @param id:
      * @return Result
      */
     @PostMapping("/status/{status}")
-    public Result switchStatus(@PathVariable Integer status, Long id) {
+    public Result<Void> switchStatus(@PathVariable Integer status, Long id) {
         log.info("switch combo status for id:{}", id );
         comboService.updateStatus(status, id);
         return Result.success();
@@ -47,11 +48,11 @@ public class ComboController {
     }
     /**
      * batch delete combos
-     * @param ids
+     * @param ids:
      * @return Result
      */
     @DeleteMapping
-    public Result batchDeleteCombo(@RequestParam List<Long> ids) {
+    public Result<Void> batchDeleteCombo(@RequestParam List<Long> ids) {
         log.info("batch delete combo ids:{}", ids);
         comboService.batchDelete(ids);
         return Result.success();
@@ -59,7 +60,7 @@ public class ComboController {
 
     /**
      * combo page query
-     * @param comboPageQueryDTO
+     * @param comboPageQueryDTO:
      * @return Result
      */
     @GetMapping("/page")
@@ -71,14 +72,26 @@ public class ComboController {
 
     /**
      * update combo
-     * @param comboDTO
+     * @param comboDTO:
      * @return Result
      */
     @PutMapping
-    public Result updateCombo(@RequestBody ComboDTO comboDTO) {
+    public Result<Void> updateCombo(@RequestBody ComboDTO comboDTO) {
         log.info("update combo comboDTO:{}", comboDTO);
         comboService.updateCombo(comboDTO);
         return Result.success();
+    }
+
+    /**
+     * get combo by comboId
+     * @param id: combo id
+     * @return Result
+     */
+    @GetMapping("/{id}")
+    public Result<ComboVO> getComboById(@PathVariable Long id) {
+        log.info("get combo by id:{}", id);
+        ComboVO comboVO = comboService.getCombo(id);
+        return Result.success(comboVO);
     }
 
 
