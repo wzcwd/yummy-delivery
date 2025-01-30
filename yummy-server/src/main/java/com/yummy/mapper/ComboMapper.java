@@ -1,9 +1,10 @@
 package com.yummy.mapper;
 
+import com.github.pagehelper.Page;
 import com.yummy.annotation.AutoFill;
+import com.yummy.dto.ComboPageQueryDTO;
 import com.yummy.entity.Combo;
 import com.yummy.enumeration.OperationType;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -36,4 +37,9 @@ public interface ComboMapper {
     Integer getStatus(Long id);
 
     void deleteByIds(List<Long> ids);
+
+    Page<Combo> pageQuery(ComboPageQueryDTO comboPageQueryDTO);
+
+    @AutoFill(value = OperationType.UPDATE)
+    void update(Combo combo);
 }

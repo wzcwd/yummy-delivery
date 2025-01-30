@@ -13,8 +13,38 @@
     <delete id="deleteByIds">
         delete from combo where id in
         <foreach collection="ids" item="id" separator="," open="(" close=")">
-        #{id}
+            #{id}
         </foreach>
     </delete>
+
+    <select id="pageQuery" resultType="com.yummy.entity.Combo">
+        select * from combo
+        <where>
+            <if test="name != null and name != '' ">
+                LOWER(name) LIKE LOWER(CONCAT('%', #{name}, '%'))
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <update id="update">
+        update combo
+        <set>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="name != null and name != '' ">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="image != null">image = #{image}</if>
+        </set>
+        where id =#{id}
+    </update>
+
+
 </mapper>
 

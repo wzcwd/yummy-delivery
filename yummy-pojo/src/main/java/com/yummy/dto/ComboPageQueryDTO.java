@@ -11,6 +11,7 @@ public class ComboPageQueryDTO implements Serializable {
 
     private int pageSize;
 
+    // combo name
     private String name;
 
     private Integer categoryId;

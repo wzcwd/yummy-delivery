@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -53,7 +53,7 @@ public class DishServiceImpl implements DishService {
         List<DishFlavor> flavors = dishDTO.getFlavors();
         // note that flavor can be null
         if (flavors != null && !flavors.isEmpty()) {
-            flavors.forEach(flavor -> {flavor.setDishId(dishId);});
+            flavors.forEach(flavor -> flavor.setDishId(dishId));
             dishFlavorMapper.insertBatch(flavors);
         }
     }
@@ -80,7 +80,7 @@ public class DishServiceImpl implements DishService {
         // can not delete  if the dish is available,
         for (Long id : ids) {
             Dish dish = dishMapper.getById(id);
-            if (dish.getStatus() == StatusConstant.ENABLE) {
+            if (Objects.equals(dish.getStatus(), StatusConstant.ENABLE)) {
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
         }
@@ -131,8 +131,10 @@ public class DishServiceImpl implements DishService {
         // insert the updated data
         List<DishFlavor> flavors = dishDTO.getFlavors();
         if (flavors != null && !flavors.isEmpty()) {
-            flavors.forEach(flavor -> {flavor.setDishId(dish.getId());});
+            flavors.forEach(flavor -> flavor.setDishId(dish.getId()));
         }
         dishFlavorMapper.insertBatch(flavors);
     }
+
+
 }

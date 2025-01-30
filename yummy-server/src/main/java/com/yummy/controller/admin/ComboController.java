@@ -1,6 +1,8 @@
 package com.yummy.controller.admin;
 
 import com.yummy.dto.ComboDTO;
+import com.yummy.dto.ComboPageQueryDTO;
+import com.yummy.result.PageResult;
 import com.yummy.result.Result;
 import com.yummy.service.ComboService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ public class ComboController {
      * add new combo
      *
      * @param comboDTO
-     * @return
+     * @return Result
      */
     @PostMapping
     public Result addCombo(@RequestBody ComboDTO comboDTO) {
@@ -54,4 +56,35 @@ public class ComboController {
         comboService.batchDelete(ids);
         return Result.success();
     }
+
+    /**
+     * combo page query
+     * @param comboPageQueryDTO
+     * @return Result
+     */
+    @GetMapping("/page")
+    public Result<PageResult> comboPageQuery(ComboPageQueryDTO comboPageQueryDTO) {
+        log.info("pageQuery comboPageQueryDTO:{}", comboPageQueryDTO);
+        PageResult pageResult = comboService.pageQuery(comboPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    /**
+     * update combo
+     * @param comboDTO
+     * @return Result
+     */
+    @PutMapping
+    public Result updateCombo(@RequestBody ComboDTO comboDTO) {
+        log.info("update combo comboDTO:{}", comboDTO);
+        comboService.updateCombo(comboDTO);
+        return Result.success();
+    }
+
+
+
+
+
+
+
 }
